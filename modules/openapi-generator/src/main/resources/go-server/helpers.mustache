@@ -32,6 +32,10 @@ func IsZeroValue(val interface{}) bool {
 	return val == nil || reflect.DeepEqual(val, reflect.Zero(reflect.TypeOf(val)).Interface())
 }
 
+func GetInt64Ptr (i int64) *int64 {
+	return &i
+}
+
 // AssertRecurseInterfaceRequired recursively checks each struct in a slice against the callback.
 // This method traverse nested slices in a preorder fashion.
 func AssertRecurseInterfaceRequired(obj interface{}, callback func(interface{}) error) error {

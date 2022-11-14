@@ -90,14 +90,14 @@ func (c *{{classname}}Controller) {{nickname}}(w http.ResponseWriter, r *http.Re
 	{{#allParams}}
 	{{#isPathParam}}
 	{{#isLong}}
-	{{paramName}}Param, err := parseInt64Parameter({{#routers}}{{#mux}}params["{{baseName}}"]{{/mux}}{{#chi}}chi.URLParam(r, "{{baseName}}"){{/chi}}{{/routers}}, {{required}})
+	{{paramName}}Param, err := parseInt64Parameter({{#routers}}{{#mux}}params["{{baseName}}"]{{/mux}}{{#chi}}chi.URLParam(r, "{{baseName}}"){{/chi}}{{/routers}}, {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
 	{{/isLong}}
 	{{#isInteger}}
-	{{paramName}}Param, err := parseInt32Parameter({{#routers}}{{#mux}}params["{{baseName}}"]{{/mux}}{{#chi}}chi.URLParam(r, "{{baseName}}"){{/chi}}{{/routers}}, {{required}})
+	{{paramName}}Param, err := parseInt32Parameter({{#routers}}{{#mux}}params["{{baseName}}"]{{/mux}}{{#chi}}chi.URLParam(r, "{{baseName}}"){{/chi}}{{/routers}}, {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
@@ -110,14 +110,14 @@ func (c *{{classname}}Controller) {{nickname}}(w http.ResponseWriter, r *http.Re
 	{{/isPathParam}}
 	{{#isQueryParam}}
 	{{#isLong}}
-	{{paramName}}Param, err := parseInt64Parameter(query.Get("{{baseName}}"), {{required}})
+	{{paramName}}Param, err := parseInt64Parameter(query.Get("{{baseName}}"), {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
 	{{/isLong}}
 	{{#isInteger}}
-	{{paramName}}Param, err := parseInt32Parameter(query.Get("{{baseName}}"), {{required}})
+	{{paramName}}Param, err := parseInt32Parameter(query.Get("{{baseName}}"), {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
@@ -132,14 +132,14 @@ func (c *{{classname}}Controller) {{nickname}}(w http.ResponseWriter, r *http.Re
 	{{/isBoolean}}
 	{{#isArray}}
 	{{#items.isLong}}
-	{{paramName}}Param, err := parseInt64ArrayParameter(query.Get("{{baseName}}"), ",", {{required}})
+	{{paramName}}Param, err := parseInt64ArrayParameter(query.Get("{{baseName}}"), ",", {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
 	{{/items.isLong}}
 	{{#items.isInteger}}
-	{{paramName}}Param, err := parseInt32ArrayParameter(query.Get("{{baseName}}"), ",", {{required}})
+	{{paramName}}Param, err := parseInt32ArrayParameter(query.Get("{{baseName}}"), ",", {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}})
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
@@ -172,16 +172,16 @@ func (c *{{classname}}Controller) {{nickname}}(w http.ResponseWriter, r *http.Re
 	}
 	{{/isFile}}
 	{{#isLong}}{{#isArray}}
-	{{paramName}}Param, err := parseInt64ArrayParameter(r.FormValue("{{baseName}}"), ",", {{required}}){{/isArray}}{{^isArray}}
-	{{paramName}}Param, err := parseInt64Parameter(r.FormValue("{{baseName}}"), {{required}}){{/isArray}}
+	{{paramName}}Param, err := parseInt64ArrayParameter(r.FormValue("{{baseName}}"), ",", {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}){{/isArray}}{{^isArray}}
+	{{paramName}}Param, err := parseInt64Parameter(r.FormValue("{{baseName}}"), {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}}){{/isArray}}
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
 	{{/isLong}}
 	{{#isInteger}}{{#isArray}}
-	{{paramName}}Param, err := parseInt32ArrayParameter(r.FormValue("{{baseName}}"), ",", {{required}}){{/isArray}}{{^isArray}}
-	{{paramName}}Param, err := parseInt32Parameter(r.FormValue("{{baseName}}"), {{required}}){{/isArray}}
+	{{paramName}}Param, err := parseInt32ArrayParameter(r.FormValue("{{baseName}}"), ",", {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}){{/isArray}}{{^isArray}}
+	{{paramName}}Param, err := parseInt32Parameter(r.FormValue("{{baseName}}"), {{required}}, {{#minimum}}GetInt64Ptr({{minimum}}){{/minimum}}{{^minimum}}nil{{/minimum}}, {{#maximum}}GetInt64Ptr({{maximum}}){{/maximum}}{{^maximum}}nil{{/maximum}}, {{#defaultValue}}GetInt64Ptr({{defaultValue}}){{/defaultValue}}{{^defaultValue}}nil{{/defaultValue}}){{/isArray}}
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
