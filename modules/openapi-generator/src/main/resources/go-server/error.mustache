@@ -34,6 +34,15 @@ func (e *RequiredError) Error() string {
 	return fmt.Sprintf("required field '%s' is zero value.", e.Field)
 }
 
+// AuthError indicates that there was an error when handling an authentication callback
+type AuthError struct {
+    Err error
+}
+
+func (e *AuthError) Error() string {
+    return fmt.Sprintf("auth error: %s", e.Err.Error())
+}
+
 // ErrorHandler defines the required method for handling error. You may implement it and inject this into a controller if
 // you would like errors to be handled differently from the DefaultErrorHandler
 type ErrorHandler func(w http.ResponseWriter, r *http.Request, err error, result *ImplResponse)
@@ -47,6 +56,9 @@ func DefaultErrorHandler(w http.ResponseWriter, r *http.Request, err error, resu
 	} else if _, ok := err.(*RequiredError); ok {
 		// Handle missing required errors
 		EncodeJSONResponse(err.Error(), func(i int) *int { return &i }(http.StatusUnprocessableEntity),{{#addResponseHeaders}} map[string][]string{},{{/addResponseHeaders}} w)
+    } else if _, ok := err.(*AuthError); ok {
+        // Handle authentication errors
+        EncodeJSONResponse(err.Error(), func(i int) *int { return &i }(http.StatusForbidden),{{#addResponseHeaders}} map[string][]string{},{{/addResponseHeaders}} w)
 	} else {
 		// Handle all other errors
 		EncodeJSONResponse(err.Error(), &result.Code,{{#addResponseHeaders}} result.Headers,{{/addResponseHeaders}} w)

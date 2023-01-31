@@ -20,6 +20,13 @@ import (
 type {{classname}}Controller struct {
 	service {{classname}}Servicer
 	errorHandler ErrorHandler
+{{#hasAuthMethods}}
+	{{#authMethods}}
+		{{#isOAuth}}
+	oauth2ScopesHandler ValidateOAuth2ScopesHandler
+		{{/isOAuth}}
+	{{/authMethods}}
+{{/hasAuthMethods}}
 }
 
 // {{classname}}Option for how the controller is set up.
@@ -31,6 +38,19 @@ func With{{classname}}ErrorHandler(h ErrorHandler) {{classname}}Option {
 		c.errorHandler = h
 	}
 }
+{{#hasAuthMethods}}
+	{{#authMethods}}
+		{{#isOAuth}}
+
+// With{{classname}}ValidateOAuth2ScopesHandler inject ValidateOAuth2ScopesHandler into controller
+func With{{classname}}ValidateOAuth2ScopesHandler(h ValidateOAuth2ScopesHandler) {{classname}}Option {
+	return func(c *{{classname}}Controller) {
+		c.oauth2ScopesHandler = h
+	}
+}
+		{{/isOAuth}}
+	{{/authMethods}}
+{{/hasAuthMethods}}
 
 // New{{classname}}Controller creates a default api controller
 func New{{classname}}Controller(s {{classname}}Servicer, opts ...{{classname}}Option) Router {
@@ -63,6 +83,24 @@ func (c *{{classname}}Controller) Routes() Routes {
 // Deprecated
 {{/isDeprecated}}
 func (c *{{classname}}Controller) {{nickname}}(w http.ResponseWriter, r *http.Request) {
+	{{#hasAuthMethods}}
+		{{#authMethods}}
+			{{#isOAuth}}
+	if c.oauth2ScopesHandler != nil {
+		requiredScopes := []string{
+			{{#scopes}}
+			"{{scope}}", // {{description}}
+			{{/scopes}}
+		}
+		if err := c.oauth2ScopesHandler(r, requiredScopes); err != nil {
+			c.errorHandler(w, r, &AuthError{Err: err}, nil)
+			return
+		}
+	}
+			{{/isOAuth}}
+		{{/authMethods}}
+	{{/hasAuthMethods}}
+
 	{{#hasFormParams}}
 	{{#isMultipart}}
 	if err := r.ParseMultipartForm(32 << 20); err != nil {

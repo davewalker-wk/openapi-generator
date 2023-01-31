@@ -3,7 +3,11 @@ package {{packageName}}
 
 import (
 	"reflect"
+	"net/http"
 )
+
+// ValidateOAuth2ScopesHandler will determine if the required scopes for a route are valid
+type ValidateOAuth2ScopesHandler func(r *http.Request, requiredScopes []string) error
 
 // Response return a ImplResponse struct filled
 func Response(code int, body interface{}) ImplResponse {
