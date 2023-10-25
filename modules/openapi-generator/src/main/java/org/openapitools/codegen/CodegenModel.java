@@ -173,6 +173,8 @@ public class CodegenModel implements IJsonSchemaValidationProperties {
     private CodegenProperty items;
     private CodegenProperty additionalProperties;
     private boolean isModel;
+    private boolean isModelAnyOf;
+    private boolean isModelOneOf;
     private boolean hasRequiredVars;
     private boolean hasDiscriminatorWithNonEmptyMapping;
     private boolean isAnyType;
@@ -687,8 +689,28 @@ public class CodegenModel implements IJsonSchemaValidationProperties {
     }
 
     @Override
+    public boolean getIsModelAnyOf() {
+        return isModelAnyOf;
+    }
+
+    @Override
+    public boolean getIsModelOneOf() {
+        return isModelOneOf;
+    }
+
+    @Override
     public void setIsModel(boolean isModel) {
         this.isModel = isModel;
+    }
+
+    @Override
+    public void setIsModelAnyOf(boolean isModelAnyOf) {
+        this.isModelAnyOf = isModelAnyOf;
+    }
+
+    @Override
+    public void setIsModelOneOf(boolean isModelOneOf) {
+        this.isModelOneOf = isModelOneOf;
     }
 
     @Override
@@ -1291,6 +1313,8 @@ public class CodegenModel implements IJsonSchemaValidationProperties {
         sb.append(", items='").append(items).append('\'');
         sb.append(", additionalProperties='").append(additionalProperties).append('\'');
         sb.append(", isModel='").append(isModel).append('\'');
+        sb.append(", isModelAnyOf='").append(isModelAnyOf).append('\'');
+        sb.append(", isModelOneOf='").append(isModelOneOf).append('\'');
         sb.append(", isNull='").append(isNull);
         sb.append(", hasValidation='").append(hasValidation);
         sb.append(", getAdditionalPropertiesIsAnyType=").append(getAdditionalPropertiesIsAnyType());

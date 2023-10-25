@@ -53,6 +53,8 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     public boolean isEmail;
     public boolean isPassword;
     public boolean isModel;
+    public boolean isModelAnyOf;
+    public boolean isModelOneOf;
     public boolean isFreeFormObject;
     public boolean isAnyType;
     public boolean isDefault;
@@ -102,9 +104,9 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     public int hashCode() {
         return Objects.hash(headers, code, message, examples, dataType, baseType, containerType, containerTypeMapped, hasHeaders,
                 isString, isNumeric, isInteger, isLong, isNumber, isFloat, isDouble, isDecimal, isByteArray, isBoolean, isDate,
-                isDateTime, isUuid, isEmail, isPassword, isModel, isFreeFormObject, isAnyType, isDefault, simpleType, primitiveType,
-                isMap, isArray, isBinary, isFile, schema, jsonSchema, vendorExtensions, items, additionalProperties,
-                vars, requiredVars, isNull, isVoid, hasValidation, isShort, isUnboundedInteger,
+                isDateTime, isUuid, isEmail, isPassword, isModel, isModelAnyOf, isModelOneOf, isFreeFormObject, isAnyType,
+                isDefault, simpleType, primitiveType, isMap, isArray, isBinary, isFile, schema, jsonSchema, vendorExtensions,
+                items, additionalProperties, vars, requiredVars, isNull, isVoid, hasValidation, isShort, isUnboundedInteger,
                 getMaxProperties(), getMinProperties(), uniqueItems, getMaxItems(), getMinItems(), getMaxLength(),
                 getMinLength(), exclusiveMinimum, exclusiveMaximum, getMinimum(), getMaximum(), getPattern(),
                 is1xx, is2xx, is3xx, is4xx, is5xx, additionalPropertiesIsAnyType, hasVars, hasRequired,
@@ -136,6 +138,8 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
                 isEmail == that.isEmail &&
                 isPassword == that.isPassword &&
                 isModel == that.isModel &&
+                isModelAnyOf == that.isModelAnyOf &&
+                isModelOneOf == that.isModelOneOf &&
                 isFreeFormObject == that.isFreeFormObject &&
                 isAnyType == that.isAnyType &&
                 isDefault == that.isDefault &&
@@ -419,6 +423,31 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     }
 
     @Override
+    public boolean getIsModelAnyOf() {
+        return isModelAnyOf;
+    }
+
+    @Override
+    public boolean getIsModelOneOf() {
+        return isModelOneOf;
+    }
+
+    @Override
+    public void setIsModel(boolean isModel) {
+        this.isModel = isModel;
+    }
+
+    @Override
+    public void setIsModelAnyOf(boolean isModelAnyOf) {
+        this.isModelAnyOf = isModelAnyOf;
+    }
+
+    @Override
+    public void setIsModelOneOf(boolean isModelOneOf) {
+        this.isModelOneOf = isModelOneOf;
+    }
+
+    @Override
     public boolean getIsArray() {
         return isArray;
     }
@@ -466,11 +495,6 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     @Override
     public void setIsPrimitiveType(boolean isPrimitiveType) {
         this.primitiveType = isPrimitiveType;
-    }
-
-    @Override
-    public void setIsModel(boolean isModel) {
-        this.isModel = isModel;
     }
 
     @Override
@@ -588,6 +612,8 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
         sb.append(", isEmail=").append(isEmail);
         sb.append(", isPassword=").append(isPassword);
         sb.append(", isModel=").append(isModel);
+        sb.append(", isModelAnyOf=").append(isModelAnyOf);
+        sb.append(", isModelOneOf=").append(isModelOneOf);
         sb.append(", isFreeFormObject=").append(isFreeFormObject);
         sb.append(", isAnyType=").append(isAnyType);
         sb.append(", isDefault=").append(isDefault);

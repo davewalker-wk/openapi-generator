@@ -114,7 +114,11 @@ public class CodegenProperty implements Cloneable, IJsonSchemaValidationProperti
     public boolean deprecated;
     public boolean hasMoreNonReadOnly; // for model constructor, true if next property is not readonly
     public boolean isPrimitiveType;
+
     public boolean isModel;
+    public boolean isModelOneOf;
+    public boolean isModelAnyOf;
+
     /**
      * True if this property is an array of items or a map container.
      * See:
@@ -589,8 +593,28 @@ public class CodegenProperty implements Cloneable, IJsonSchemaValidationProperti
     }
 
     @Override
+    public boolean getIsModelAnyOf() {
+        return isModelAnyOf;
+    }
+
+    @Override
+    public boolean getIsModelOneOf() {
+        return isModelOneOf;
+    }
+
+    @Override
     public void setIsModel(boolean isModel) {
         this.isModel = isModel;
+    }
+
+    @Override
+    public void setIsModelAnyOf(boolean isModelAnyOf) {
+        this.isModelAnyOf = isModelAnyOf;
+    }
+
+    @Override
+    public void setIsModelOneOf(boolean isModelOneOf) {
+        this.isModelOneOf = isModelOneOf;
     }
 
     @Override
@@ -1165,6 +1189,8 @@ public class CodegenProperty implements Cloneable, IJsonSchemaValidationProperti
         sb.append(", hasMoreNonReadOnly=").append(hasMoreNonReadOnly);
         sb.append(", isPrimitiveType=").append(isPrimitiveType);
         sb.append(", isModel=").append(isModel);
+        sb.append(", isModelAnyOf=").append(isModelAnyOf);
+        sb.append(", isModelOneOf=").append(isModelOneOf);
         sb.append(", isContainer=").append(isContainer);
         sb.append(", isString=").append(isString);
         sb.append(", isNumeric=").append(isNumeric);
@@ -1259,6 +1285,8 @@ public class CodegenProperty implements Cloneable, IJsonSchemaValidationProperti
                 hasMoreNonReadOnly == that.hasMoreNonReadOnly &&
                 isPrimitiveType == that.isPrimitiveType &&
                 isModel == that.isModel &&
+                isModelAnyOf == that.isModelAnyOf &&
+                isModelOneOf == that.isModelOneOf &&
                 isContainer == that.isContainer &&
                 isString == that.isString &&
                 isNumeric == that.isNumeric &&
@@ -1370,8 +1398,8 @@ public class CodegenProperty implements Cloneable, IJsonSchemaValidationProperti
                 defaultValueWithParam, baseType, containerType, containerTypeMapped, title, unescapedDescription,
                 maxLength, minLength, pattern, example, jsonSchema, minimum, maximum,
                 exclusiveMinimum, exclusiveMaximum, required, deprecated,
-                hasMoreNonReadOnly, isPrimitiveType, isModel, isContainer, isString, isNumeric,
-                isInteger, isLong, isNumber, isFloat, isDouble, isDecimal, isByteArray, isBinary, isFile,
+                hasMoreNonReadOnly, isPrimitiveType, isModel, isModelAnyOf, isModelOneOf, isContainer, isString,
+                isNumeric, isInteger, isLong, isNumber, isFloat, isDouble, isDecimal, isByteArray, isBinary, isFile,
                 isBoolean, isDate, isDateTime, isUuid, isUri, isEmail, isPassword, isFreeFormObject,
                 isArray, isMap, isEnum, isInnerEnum, isEnumRef, isAnyType, isReadOnly, isWriteOnly, isNullable, isShort,
                 isUnboundedInteger, isSelfReference, isCircularReference, isDiscriminator, isNew, isOverridden, _enum,

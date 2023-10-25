@@ -34,7 +34,8 @@ import io.swagger.v3.oas.models.examples.Example;
 public class CodegenParameter implements IJsonSchemaValidationProperties {
     public boolean isFormParam, isQueryParam, isPathParam, isHeaderParam,
             isCookieParam, isBodyParam, isContainer,
-            isCollectionFormatMulti, isPrimitiveType, isModel, isExplode, isDeepObject, isMatrix, isAllowEmptyValue;
+            isCollectionFormatMulti, isPrimitiveType, isModel, isModelAnyOf, isModelOneOf, isExplode, isDeepObject,
+            isMatrix, isAllowEmptyValue;
     public String baseName, paramName, dataType, datatypeWithEnum, dataFormat, contentType,
             collectionFormat, description, unescapedDescription, baseType, defaultValue, enumDefaultValue, enumName, style;
 
@@ -145,6 +146,8 @@ public class CodegenParameter implements IJsonSchemaValidationProperties {
         output.isCollectionFormatMulti = this.isCollectionFormatMulti;
         output.isPrimitiveType = this.isPrimitiveType;
         output.isModel = this.isModel;
+        output.isModelAnyOf = this.isModelAnyOf;
+        output.isModelOneOf = this.isModelOneOf;
         output.description = this.description;
         output.unescapedDescription = this.unescapedDescription;
         output.baseType = this.baseType;
@@ -265,7 +268,7 @@ public class CodegenParameter implements IJsonSchemaValidationProperties {
 
     @Override
     public int hashCode() {
-        return Objects.hash(isFormParam, isQueryParam, isPathParam, isHeaderParam, isCookieParam, isBodyParam, isContainer, isCollectionFormatMulti, isPrimitiveType, isModel, isExplode, baseName, paramName, dataType, datatypeWithEnum, dataFormat, collectionFormat, description, unescapedDescription, baseType, containerType, containerTypeMapped, defaultValue, enumDefaultValue, enumName, style, isDeepObject, isMatrix, isAllowEmptyValue, example, examples, jsonSchema, isString, isNumeric, isInteger, isLong, isNumber, isFloat, isDouble, isDecimal, isByteArray, isBinary, isBoolean, isDate, isDateTime, isUuid, isUri, isEmail, isPassword, isFreeFormObject, isAnyType, isArray, isMap, isFile, isEnum, isEnumRef, _enum, allowableValues, items, mostInnerItems, additionalProperties, vars, requiredVars, vendorExtensions, hasValidation, getMaxProperties(), getMinProperties(), isNullable, isDeprecated, required, getMaximum(), getExclusiveMaximum(), getMinimum(), getExclusiveMinimum(), getMaxLength(), getMinLength(), getPattern(), getMaxItems(), getMinItems(), getUniqueItems(), contentType, multipleOf, isNull, isVoid, additionalPropertiesIsAnyType, hasVars, hasRequired, isShort, isUnboundedInteger, hasDiscriminatorWithNonEmptyMapping, composedSchemas, hasMultipleTypes, schema, content, requiredVarsMap, ref, uniqueItemsBoolean, schemaIsFromAdditionalProperties);
+        return Objects.hash(isFormParam, isQueryParam, isPathParam, isHeaderParam, isCookieParam, isBodyParam, isContainer, isCollectionFormatMulti, isPrimitiveType, isModel, isModelAnyOf, isModelOneOf, isExplode, baseName, paramName, dataType, datatypeWithEnum, dataFormat, collectionFormat, description, unescapedDescription, baseType, containerType, containerTypeMapped, defaultValue, enumDefaultValue, enumName, style, isDeepObject, isMatrix, isAllowEmptyValue, example, examples, jsonSchema, isString, isNumeric, isInteger, isLong, isNumber, isFloat, isDouble, isDecimal, isByteArray, isBinary, isBoolean, isDate, isDateTime, isUuid, isUri, isEmail, isPassword, isFreeFormObject, isAnyType, isArray, isMap, isFile, isEnum, isEnumRef, _enum, allowableValues, items, mostInnerItems, additionalProperties, vars, requiredVars, vendorExtensions, hasValidation, getMaxProperties(), getMinProperties(), isNullable, isDeprecated, required, getMaximum(), getExclusiveMaximum(), getMinimum(), getExclusiveMinimum(), getMaxLength(), getMinLength(), getPattern(), getMaxItems(), getMinItems(), getUniqueItems(), contentType, multipleOf, isNull, isVoid, additionalPropertiesIsAnyType, hasVars, hasRequired, isShort, isUnboundedInteger, hasDiscriminatorWithNonEmptyMapping, composedSchemas, hasMultipleTypes, schema, content, requiredVarsMap, ref, uniqueItemsBoolean, schemaIsFromAdditionalProperties);
     }
 
     @Override
@@ -283,6 +286,8 @@ public class CodegenParameter implements IJsonSchemaValidationProperties {
                 isCollectionFormatMulti == that.isCollectionFormatMulti &&
                 isPrimitiveType == that.isPrimitiveType &&
                 isModel == that.isModel &&
+                isModelAnyOf == that.isModelAnyOf &&
+                isModelOneOf == that.isModelOneOf &&
                 isExplode == that.isExplode &&
                 isString == that.isString &&
                 isNumeric == that.isNumeric &&
@@ -395,6 +400,8 @@ public class CodegenParameter implements IJsonSchemaValidationProperties {
         sb.append(", isCollectionFormatMulti=").append(isCollectionFormatMulti);
         sb.append(", isPrimitiveType=").append(isPrimitiveType);
         sb.append(", isModel=").append(isModel);
+        sb.append(", isModelAnyOf=").append(isModelAnyOf);
+        sb.append(", isModelOneOf=").append(isModelOneOf);
         sb.append(", isExplode=").append(isExplode);
         sb.append(", baseName='").append(baseName).append('\'');
         sb.append(", paramName='").append(paramName).append('\'');
@@ -698,8 +705,28 @@ public class CodegenParameter implements IJsonSchemaValidationProperties {
     }
 
     @Override
+    public boolean getIsModelAnyOf() {
+        return isModelAnyOf;
+    }
+
+    @Override
+    public boolean getIsModelOneOf() {
+        return isModelOneOf;
+    }
+
+    @Override
     public void setIsModel(boolean isModel) {
         this.isModel = isModel;
+    }
+
+    @Override
+    public void setIsModelAnyOf(boolean isModelAnyOf) {
+        this.isModelAnyOf = isModelAnyOf;
+    }
+
+    @Override
+    public void setIsModelOneOf(boolean isModelOneOf) {
+        this.isModelOneOf = isModelOneOf;
     }
 
     @Override

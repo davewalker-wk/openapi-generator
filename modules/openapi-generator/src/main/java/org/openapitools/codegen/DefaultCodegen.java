@@ -4128,7 +4128,11 @@ public class DefaultCodegen implements CodegenConfig {
              */
             String type = getSchemaType(p);
             setNonArrayMapProperty(property, type);
-            property.isModel = (ModelUtils.isComposedSchema(referencedSchema) || ModelUtils.isObjectSchema(referencedSchema)) && ModelUtils.isModel(referencedSchema);
+            if ((ModelUtils.isComposedSchema(referencedSchema) || ModelUtils.isObjectSchema(referencedSchema)) && ModelUtils.isModel(referencedSchema)) {
+                property.isModel = true;
+                property.isModelAnyOf = ModelUtils.isAnyOf(referencedSchema);
+                property.isModelOneOf = ModelUtils.isOneOf(referencedSchema);
+            }
         }
 
         // restore original schema with default value, nullable, readonly etc
@@ -4867,6 +4871,7 @@ public class DefaultCodegen implements CodegenConfig {
         r.dataType = getTypeDeclaration(responseSchema);
         r.returnProperty = cp;
 
+        Schema referencedSchema = ModelUtils.getReferencedSchema(this.openAPI, responseSchema);
         if (!ModelUtils.isArraySchema(responseSchema)) {
             if (cp.complexType != null) {
                 if (cp.items != null) {
@@ -4875,6 +4880,10 @@ public class DefaultCodegen implements CodegenConfig {
                     r.baseType = cp.complexType;
                 }
                 r.isModel = true;
+                if (referencedSchema != null) {
+                    r.isModelAnyOf = ModelUtils.isAnyOf(referencedSchema);
+                    r.isModelOneOf = ModelUtils.isOneOf(referencedSchema);
+                }
             } else {
                 r.baseType = cp.baseType;
             }

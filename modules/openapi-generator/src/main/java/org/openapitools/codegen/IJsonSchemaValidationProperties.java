@@ -90,7 +90,15 @@ public interface IJsonSchemaValidationProperties {
 
     boolean getIsModel();
 
+    boolean getIsModelAnyOf();
+
+    boolean getIsModelOneOf();
+
     void setIsModel(boolean isModel);
+
+    void setIsModelAnyOf(boolean isModelAnyOf);
+
+    void setIsModelOneOf(boolean isModelOneOf);
 
     boolean getIsDate();
 
@@ -274,6 +282,8 @@ public interface IJsonSchemaValidationProperties {
     default void setTypeProperties(Schema p) {
         if (ModelUtils.isModelWithPropertiesOnly(p)) {
             setIsModel(true);
+            setIsModelAnyOf(ModelUtils.isAnyOf(p));
+            setIsModelOneOf(ModelUtils.isOneOf(p));
         } else if (ModelUtils.isArraySchema(p)) {
             setIsArray(true);
         } else if (ModelUtils.isFileSchema(p) && !ModelUtils.isStringSchema(p)) {
